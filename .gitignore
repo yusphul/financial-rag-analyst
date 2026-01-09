@@ -1,46 +1,28 @@
-# =========================
-# Secrets / env files
-# =========================
+# Secrets
 .env
 .env.*
 !.env.example
 
-# =========================
 # Python
-# =========================
 .venv/
 venv/
 __pycache__/
 *.pyc
-*.pyo
-*.pyd
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
-.ipynb_checkpoints/
 
-# =========================
-# Node / Next.js
-# =========================
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-.next/
-out/
-dist/
-build/
+# Node / Next
+web/node_modules/
+web/.next/
+web/out/
+web/dist/
 
-# =========================
-# OS / Editor
-# =========================
-.DS_Store
-Thumbs.db
+# Vercel metadata
+.vercel/
+
+# Editor/OS
 .vscode/
 .idea/
-
-# =========================
-# Vercel
-# =========================
-.vercel/
+.DS_Store
+Thumbs.db
