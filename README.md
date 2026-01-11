@@ -93,57 +93,57 @@ financial-rag-analyst/
 │   └── package.json
 │
 └── README.md
+```
 
 
 ## ▶️ Run Locally (Recommended for Demo)
-** 1️⃣ Backend (FastAPI)
+**1️⃣ Backend (FastAPI)**
 
-```text
+```bash
 cd api-backend
 python -m venv .venv
 source .venv/bin/activate   # Windows: .\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
-
+```
 
 Create .env:
 
-```text
+```env
 OPENAI_API_KEY=your_key
 PINECONE_API_KEY=your_key
 PINECONE_INDEX=financial-rag-analyst
 PINECONE_CLOUD=aws
 PINECONE_REGION=us-east-1
-
+```
 
 Run the API:
 
-```text
+```bash
 uvicorn api.index:app --reload --port 8000 --env-file .env
-
+```
 
 Test:
 
-http://127.0.0.1:8000/health
+* http://127.0.0.1:8000/health
+* http://127.0.0.1:8000/docs
 
-http://127.0.0.1:8000/docs
-
-** 2️⃣ Frontend (Next.js)
+**2️⃣ Frontend (Next.js)**
+```bash
 cd web
 npm install
 npm run dev
-
+```
 
 Open:
-
-http://localhost:3000
+* http://localhost:3000
 
 ## How to Use
-** Upload
+**Upload**
 - Enter a scope (e.g., acme_q3_2025)
 - Drag & drop one or many documents into the uploader
 - Confirm ingestion status in the Document Library
 
-** Ask Questions
+**Ask Questions**
 - Choose By Scope or All Docs
 - Ask your question
 - Expand Sources to see page/section citations + snippets
