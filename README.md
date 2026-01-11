@@ -9,95 +9,125 @@ You can **upload multiple documents**, group them by **scope** (e.g., `acme_q3_2
 
 ---
 
-## Features
+## 🚀 Features
 
-- ✅ **Multi-document upload** (PDF/DOCX/CSV/TXT)
-- ✅ **Scopes** for clean isolation (company/quarter): `doc_scope=acme_q3_2025`
-- ✅ **All docs mode**: query across all uploaded scopes
-- ✅ **Cited answers**: sources + page/section + snippets
-- ✅ **Modern UI**: drag & drop, library panel, chat bubbles, source expanders
+- 📄 Multi-document ingestion (PDF/DOCX/CSV/TXT)
+  - SEC filings (10-Q / 10-K PDFs)  
+  - Earnings call transcripts (TXT / PDF)  
+  - CSV financial statements (P&L-style tables)
+
+- 🔍 Semantic retrieval using vector search  
+- 🧠 LLM-powered financial analysis  
+- 📌 Source-aware answers (retrieved chunks)  
+- 🧪 Evaluation-ready (RAGAS-compatible design)  
+- 🌐 Local + serverless deployment (Vercel)
+- **Modern UI**: drag & drop, library panel, chat bubbles, source expanders
 
 ---
 
 ## Architecture (High-level)
 
-**Frontend (Next.js)**
-- Document upload + library
-- Chat interface
-- Displays citations/snippets
+User
+↓
+Web UI (Next.js)
+↓
+FastAPI Backend (RAG Service)
+↓
+Vector Database (Pinecone)
+↓
+LLM (OpenAI)
 
-**Backend (FastAPI)**
-- `/ingest_many` → parse → chunk → embed → upsert to Pinecone
-- `/chat` → retrieve → LLM answer (OpenAI) with citations
-
-**Vector DB**
-- Pinecone (serverless)
-
-**LLM**
-- OpenAI (embeddings + chat)
+**RAG pipeline**
+1. Upload documents
+2. Parse & chunk text
+3. Generate embeddings
+4. Store vectors in Pinecone
+5. Retrieve top-K relevant chunks
+6. Generate grounded answer with LLM (OpenAI) with citations
 
 ---
 
-## Repo Structure
+## 🛠️ Tech Stack
 
-```txt
-financial-rag-analyst/
-├─ api/                      # FastAPI backend
-│  ├─ index.py               # /health, /ingest, /ingest_many, /chat
-│  └─ rag/                   # loaders, chunking, embeddings, retrieval, answer
-├─ web/                      # Next.js frontend
-│  ├─ app/                   # UI + proxy routes
-│  └─ package.json
-├─ .env                      # local env vars (not committed)
-├─ .venv/                    # local python venv (not committed)
-└─ README.md
-
-
-## Prerequisites
-
-- Node.js 18+ (recommended)
+### Backend
 - Python 3.11+
-- Pinecone account + API key
-- OpenAI API key
+- FastAPI
+- LangChain
+- OpenAI API
+- Pinecone (Vector Database)
 
-## Environment Variables
+### Frontend
+- Next.js (App Router)
+- TypeScript
+- Tailwind CSS
 
-Create a file in repo root named .env:
+### Dev & Ops
+- Vercel (Serverless)
+- Uvicorn (local development)
+- VS Code
+- draw.io / Excalidraw (architecture diagrams)
 
-OPENAI_API_KEY=YOUR_OPENAI_KEY
-PINECONE_API_KEY=YOUR_PINECONE_KEY
+---
+
+## 📁 Repository Structure
+
+```text
+financial-rag-analyst/
+├── api-backend/
+│   ├── api/
+│   │   ├── index.py          # FastAPI app
+│   │   ├── health.py         # Health endpoint
+│   │   └── rag/
+│   │       ├── loaders.py
+│   │       ├── chunking.py
+│   │       ├── embeddings.py
+│   │       ├── vectorstore.py
+│   │       ├── retrieval.py
+│   │       └── answer.py
+│   └── requirements.txt
+│
+├── web/
+│   ├── app/
+│   │   ├── api/              # Next.js route handlers
+│   │   └── page.tsx          # UI
+│   └── package.json
+│
+└── README.md
+
+
+## ▶️ Run Locally (Recommended for Demo)
+** 1️⃣ Backend (FastAPI)
+
+```text
+cd api-backend
+python -m venv .venv
+source .venv/bin/activate   # Windows: .\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+
+
+Create .env:
+
+```text
+OPENAI_API_KEY=your_key
+PINECONE_API_KEY=your_key
 PINECONE_INDEX=financial-rag-analyst
 PINECONE_CLOUD=aws
 PINECONE_REGION=us-east-1
 
 
-Note: https://app.pinecone.io/ is the Pinecone dashboard (for keys/index), not an env variable.
+Run the API:
 
-## Local Setup (Recommended)
-** 1) Backend (FastAPI)
-
-From repo root:
-
-python -m venv .venv
-# Windows PowerShell:
-.\.venv\Scripts\Activate.ps1
-
-pip install --upgrade pip
-pip install fastapi uvicorn python-multipart pydantic
-pip install langchain langchain-openai langchain-text-splitters
-pip install pinecone pymupdf python-docx pandas python-dotenv
-
+```text
 uvicorn api.index:app --reload --port 8000 --env-file .env
 
 
-Verify:
+Test:
 
-http://127.0.0.1:8000/health → {"ok": true}
+http://127.0.0.1:8000/health
 
-** 2) Frontend (Next.js)
+http://127.0.0.1:8000/docs
 
-In a new terminal:
-
+** 2️⃣ Frontend (Next.js)
 cd web
 npm install
 npm run dev
@@ -106,12 +136,6 @@ npm run dev
 Open:
 
 http://localhost:3000
-
-The Next.js app proxies requests to the backend:
-
-/api/ingest_many → http://127.0.0.1:8000/ingest_many
-
-/api/chat → http://127.0.0.1:8000/chat
 
 ## How to Use
 ** Upload

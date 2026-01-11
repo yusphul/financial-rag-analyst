@@ -1,6 +1,6 @@
 import os
-from typing import Optional
-from fastapi import FastAPI
+from typing import Optional, Any, Dict, List
+from fastapi import FastAPI, UploadFile, File
 from pydantic import BaseModel
 
 # IMPORTANT: keep your imports consistent with your actual package layout.
