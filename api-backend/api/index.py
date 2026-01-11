@@ -1,8 +1,10 @@
 import os
-from typing import Optional, Any, Dict, List
-from fastapi import FastAPI, UploadFile, File
+from typing import Optional
+from fastapi import FastAPI
 from pydantic import BaseModel
 
+# IMPORTANT: keep your imports consistent with your actual package layout.
+# If your folder is: api-backend/api/rag/..., then these should be:
 from api.rag.loaders import load_document_bytes
 from api.rag.chunking import chunk_documents
 from api.rag.embeddings import embed_texts
@@ -12,16 +14,18 @@ from api.rag.answer import generate_answer
 
 app = FastAPI()
 
+# Vercel will hit /api/..., so we add a prefix in production
+API_PREFIX = os.getenv("API_PREFIX", "")  # set to "/api" on Vercel
 
 class ChatRequest(BaseModel):
     question: str
-    doc_scope: Optional[str] = None  # "default" or "ALL"
+    doc_scope: Optional[str] = None
     top_k: int = 6
 
+@app.get(f"{API_PREFIX}/health")
+def health():
+    return {"ok": True}
 
-# @app.get("/health")
-# def health():
-#     return {"ok": True}
 
 
 @app.post("/ingest")
