@@ -3,12 +3,12 @@ from typing import Optional, Any, Dict, List
 from fastapi import FastAPI, UploadFile, File
 from pydantic import BaseModel
 
-from rag.loaders import load_document_bytes
-from rag.chunking import chunk_documents
-from rag.embeddings import embed_texts
-from rag.vectorstore import upsert_chunks
-from rag.retrieval import retrieve
-from rag.answer import generate_answer
+from api.rag.loaders import load_document_bytes
+from api.rag.chunking import chunk_documents
+from api.rag.embeddings import embed_texts
+from api.rag.vectorstore import upsert_chunks
+from api.rag.retrieval import retrieve
+from api.rag.answer import generate_answer
 
 app = FastAPI()
 
