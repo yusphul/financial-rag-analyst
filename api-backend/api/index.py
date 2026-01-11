@@ -19,9 +19,9 @@ class ChatRequest(BaseModel):
     top_k: int = 6
 
 
-@app.get("/health")
-def health():
-    return {"ok": True}
+# @app.get("/health")
+# def health():
+#     return {"ok": True}
 
 
 @app.post("/ingest")
